@@ -25,7 +25,7 @@ final readonly class DefaultErrorUriResolver implements ErrorUriResolver
      */
     public function resolve(string $errorType): string
     {
-        if ($errorType === 'not-found') {
+        if ('not-found' === $errorType) {
             return 'https://example.com/error#not-found';
         }
 
