@@ -30,7 +30,7 @@ final class ReactPhpServerTest extends TestCase
 
     public static function tearDownAfterClass(): void
     {
-        (new \ReflectionClass(Loop::class))->getProperty('instance')->setValue(null);
+        (new \ReflectionClass(Loop::class))->setStaticPropertyValue('instance', null);
     }
 
     protected function setUp(): void
