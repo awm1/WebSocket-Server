@@ -15,8 +15,6 @@ final class PhpReader implements Reader
 
     /**
      * @throws InvalidSession if the session data cannot be deserialized
-     *
-     * @see https://www.php.net/manual/en/function.session-decode.php#108037
      */
     public function read(string $data): array
     {
@@ -24,20 +22,103 @@ final class PhpReader implements Reader
         $offset = 0;
 
         while ($offset < \strlen($data)) {
-            if (!str_contains(substr($data, $offset), self::DELIMITER)) {
+            $currentPos = strpos($data, self::DELIMITER, $offset);
+
+            if (false === $currentPos) {
                 throw new InvalidSession($data, 'Cannot deserialize session data.');
             }
 
-            $pos = strpos($data, self::DELIMITER, $offset);
-            $num = $pos - $offset;
-            $variable = substr($data, $offset, $num);
-            $offset += $num + 1;
-            $deserializedSection = unserialize(substr($data, $offset));
+            $name = substr($data, $offset, $currentPos - $offset);
+            $offset = $currentPos + 1;
 
-            $deserialized[$variable] = $deserializedSection;
-            $offset += \strlen(serialize($deserializedSection));
+            // Find the position for the end of the serialized data so we can correctly chop the next variable if need be
+            $serializedLength = $this->getSerializedSegmentLength(substr($data, $offset));
+
+            if (false === $serializedLength) {
+                throw new InvalidSession($data, 'Cannot deserialize session data.');
+            }
+
+            $rawData = substr($data, $offset, $serializedLength);
+
+            $value = unserialize($rawData);
+
+            $deserialized[$name] = $value;
+
+            $offset += $serializedLength;
         }
 
         return $deserialized;
+    }
+
+    private function getSerializedSegmentLength(string $data): int|false
+    {
+        // No serialized value can have a length of less than 4 characters
+        if (\strlen($data) < 4) {
+            return false;
+        }
+
+        // The data type will be in position 0
+        switch ($data[0]) {
+            // Null value
+            case 'N':
+                return 2;
+
+            // Boolean value
+            case 'b':
+                return 4;
+
+            // Integer or floating point value
+            case 'i':
+            case 'd':
+                $end = strpos($data, ';');
+
+                return false === $end ? false : $end + 1;
+
+            // String value
+            case 's':
+                if (!preg_match('/^s:\d+:"/', $data, $matches)) {
+                    return false;
+                }
+
+                // Add characters for the closing quote and semicolon
+                return \strlen($matches[0]) + (int) substr($matches[0], 2, -2) + 2;
+
+            // Array value
+            case 'a':
+                if (!preg_match('/^a:\d+:\{/', $data, $matches)) {
+                    return false;
+                }
+
+                $start = \strlen($matches[0]);
+                $count = (int) substr($matches[0], 2, -2);
+                $offset = $start;
+                $length = \strlen($data);
+
+                // Double the count to account for each element having a key and value
+                for ($i = 0; $i < $count * 2; ++$i) {
+                    $segmentLength = $this->getSerializedSegmentLength(substr($data, $offset));
+
+                    if (false === $segmentLength) {
+                        return false;
+                    }
+
+                    $offset += $segmentLength;
+
+                    if ($offset >= $length) {
+                        return false;
+                    }
+                }
+
+                if ('}' !== $data[$offset]) {
+                    return false;
+                }
+
+                // Add characters for the closing brace
+                return $offset + 1;
+
+            // Unsupported value
+            default:
+                return false;
+        }
     }
 }
