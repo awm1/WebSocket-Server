@@ -114,7 +114,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
             $connection->callError(
                 $id,
                 $this->errorUriResolver->resolve('not-found'),
-                sprintf('Could not find a message handler for URI "%s".', $resolvedUri),
+                \sprintf('Could not find a message handler for URI "%s".', $resolvedUri),
                 [
                     'code' => 404,
                     'uri' => $resolvedUri,
@@ -130,7 +130,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
             $connection->callError(
                 $id,
                 $this->errorUriResolver->resolve('not-found'),
-                sprintf('Could not find a message handler for URI "%s".', $resolvedUri),
+                \sprintf('Could not find a message handler for URI "%s".', $resolvedUri),
                 [
                     'code' => 404,
                     'uri' => $resolvedUri,
@@ -141,7 +141,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
         }
 
         if (!$handler instanceof RPCMessageHandler && !$handler instanceof RPCMessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('The message handler for a "CALL" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', RPCMessageHandler::class, RPCMessageMiddleware::class, $handler::class));
+            throw new InvalidMessageHandler(\sprintf('The message handler for a "CALL" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', RPCMessageHandler::class, RPCMessageMiddleware::class, $handler::class));
         }
 
         $handler->onCall($connection, $id, $request, $params);
@@ -165,7 +165,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -181,7 +181,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -191,7 +191,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
         }
 
         if (!$handler instanceof TopicMessageHandler && !$handler instanceof TopicMessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('The message handler for a "SUBSCRIBE" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
+            throw new InvalidMessageHandler(\sprintf('The message handler for a "SUBSCRIBE" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
         }
 
         $handler->onSubscribe($connection, $topic, $request);
@@ -215,7 +215,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -231,7 +231,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -241,7 +241,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
         }
 
         if (!$handler instanceof TopicMessageHandler && !$handler instanceof TopicMessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('The message handler for a "UNSUBSCRIBE" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
+            throw new InvalidMessageHandler(\sprintf('The message handler for a "UNSUBSCRIBE" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
         }
 
         $handler->onUnsubscribe($connection, $topic, $request);
@@ -269,7 +269,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -285,7 +285,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
                 $topic->id,
                 [
                     'error' => true,
-                    'message' => sprintf('Could not find a message handler for URI "%s".', $topic->id),
+                    'message' => \sprintf('Could not find a message handler for URI "%s".', $topic->id),
                     'code' => 404,
                     'uri' => $topic->id,
                 ]
@@ -295,7 +295,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
         }
 
         if (!$handler instanceof TopicMessageHandler && !$handler instanceof TopicMessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('The message handler for a "PUBLISH" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
+            throw new InvalidMessageHandler(\sprintf('The message handler for a "PUBLISH" message must be an instance of "%s" or "%s", ensure "%s" implements the right interface.', TopicMessageHandler::class, TopicMessageMiddleware::class, $handler::class));
         }
 
         $handler->onPublish($connection, $topic, $request, $event, $exclude, $eligible);
@@ -309,7 +309,7 @@ final readonly class DispatchMessageToHandler implements WAMPServerMiddleware
         try {
             $parameters = $this->matcher->match($uri);
         } catch (ResourceNotFoundException $exception) {
-            throw new RouteNotFound(sprintf('Could not find a message handler for URI "%s".', $uri), $exception->getCode(), $exception);
+            throw new RouteNotFound(\sprintf('Could not find a message handler for URI "%s".', $uri), $exception->getCode(), $exception);
         }
 
         // This snippet emulates the HttpKernel's RouterListener behavior for setting route attributes to the request

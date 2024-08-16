@@ -33,7 +33,7 @@ final readonly class DefaultWAMPConnection implements WAMPConnection
     public function send(string|DataInterface $data): void
     {
         if ($data instanceof DataInterface && !$this->connection instanceof WebSocketConnection) {
-            throw new UnsupportedConnection(sprintf('To send a "%s" implementation, "%s" must decorate an instance of "%s".', DataInterface::class, self::class, WebSocketConnection::class));
+            throw new UnsupportedConnection(\sprintf('To send a "%s" implementation, "%s" must decorate an instance of "%s".', DataInterface::class, self::class, WebSocketConnection::class));
         }
 
         if ($this->connection instanceof WebSocketConnection) {

@@ -65,7 +65,7 @@ final class PsrContainerMessageHandlerResolverTest extends TestCase
         $this->expectException(UnknownMessageHandler::class);
 
         $attributes = new ParameterBag();
-        $attributes->set('_controller', \UnknownClass::class); /** @phpstan-ignore-line class.notFound */
+        $attributes->set('_controller', \UnknownClass::class); /* @phpstan-ignore-line class.notFound */
 
         (new PsrContainerMessageHandlerResolver(new Container()))->findMessageHandler(new WAMPMessageRequest($attributes));
     }
@@ -95,7 +95,7 @@ final class Container implements ContainerInterface
      */
     public function get($id)
     {
-        return $this->services[$id] ?? throw new ServiceNotFound(sprintf('Service "%s" does not exist.', $id));
+        return $this->services[$id] ?? throw new ServiceNotFound(\sprintf('Service "%s" does not exist.', $id));
     }
 
     /**

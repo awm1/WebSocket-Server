@@ -257,7 +257,7 @@ final class InitializeSessionTest extends TestCase
 
     private function createOptionsHandler(): OptionsHandler
     {
-        return new class() implements OptionsHandler {
+        return new class implements OptionsHandler {
             private array $options = [];
 
             public function get(string $option): mixed

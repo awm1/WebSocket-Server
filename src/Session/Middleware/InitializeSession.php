@@ -38,7 +38,7 @@ final readonly class InitializeSession implements ServerMiddleware
         $request = $connection->getAttributeStore()->get('http.request');
 
         if (!$request instanceof RequestInterface) {
-            throw new MissingRequest(sprintf('The "%s" middleware requires the HTTP request has been processed. Ensure the "%s" middleware (or a custom middleware setting the "http.request" in the attribute store) has been run.', self::class, ParseHttpRequest::class));
+            throw new MissingRequest(\sprintf('The "%s" middleware requires the HTTP request has been processed. Ensure the "%s" middleware (or a custom middleware setting the "http.request" in the attribute store) has been run.', self::class, ParseHttpRequest::class));
         }
 
         $session = $this->sessionFactory->createSession();

@@ -124,7 +124,7 @@ final class ReadOnlyNativeSessionStorageTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testCanRegisterBagsBeforeStartingTheSession(): void
     {
-        $bag = new class() implements SessionBagInterface {
+        $bag = new class implements SessionBagInterface {
             public function getName(): string
             {
                 return 'test';
@@ -148,7 +148,7 @@ final class ReadOnlyNativeSessionStorageTest extends TestCase
 
     private function createOptionsHandler(): OptionsHandler
     {
-        return new class() implements OptionsHandler {
+        return new class implements OptionsHandler {
             private array $options = [];
 
             public function get(string $option): mixed

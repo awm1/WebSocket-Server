@@ -63,18 +63,18 @@ final class PhpReader implements Reader
             case 'N':
                 return 2;
 
-            // Boolean value
+                // Boolean value
             case 'b':
                 return 4;
 
-            // Integer or floating point value
+                // Integer or floating point value
             case 'i':
             case 'd':
                 $end = strpos($data, ';');
 
                 return false === $end ? false : $end + 1;
 
-            // String value
+                // String value
             case 's':
                 if (!preg_match('/^s:\d+:"/', $data, $matches)) {
                     return false;
@@ -83,7 +83,7 @@ final class PhpReader implements Reader
                 // Add characters for the closing quote and semicolon
                 return \strlen($matches[0]) + (int) substr($matches[0], 2, -2) + 2;
 
-            // Array value
+                // Array value
             case 'a':
                 if (!preg_match('/^a:\d+:\{/', $data, $matches)) {
                     return false;
@@ -116,7 +116,7 @@ final class PhpReader implements Reader
                 // Add characters for the closing brace
                 return $offset + 1;
 
-            // Unsupported value
+                // Unsupported value
             default:
                 return false;
         }

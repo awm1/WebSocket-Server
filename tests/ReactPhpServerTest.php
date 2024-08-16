@@ -89,7 +89,7 @@ final class ReactPhpServerTest extends TestCase
         $client = socket_create(\AF_INET, \SOCK_STREAM, \SOL_TCP);
 
         if (false === $client) {
-            self::fail(sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
+            self::fail(\sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
         }
 
         socket_set_option($client, \SOL_SOCKET, \SO_REUSEADDR, 1);
@@ -120,7 +120,7 @@ final class ReactPhpServerTest extends TestCase
         $client = socket_create(\AF_INET, \SOCK_STREAM, \SOL_TCP);
 
         if (false === $client) {
-            self::fail(sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
+            self::fail(\sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
         }
 
         socket_set_option($client, \SOL_SOCKET, \SO_REUSEADDR, 1);
@@ -156,7 +156,7 @@ final class ReactPhpServerTest extends TestCase
         $client = socket_create(\AF_INET, \SOCK_STREAM, \SOL_TCP);
 
         if (false === $client) {
-            self::fail(sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
+            self::fail(\sprintf('Could not create the socket for testing: %s', socket_strerror(socket_last_error())));
         }
 
         socket_set_option($client, \SOL_SOCKET, \SO_REUSEADDR, 1);

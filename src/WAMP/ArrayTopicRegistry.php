@@ -21,7 +21,7 @@ final class ArrayTopicRegistry implements TopicRegistry
     public function add(Topic $topic): void
     {
         if ($this->has($topic->id)) {
-            throw new TopicAlreadyRegistered(sprintf('A topic for URI "%s" is already registered.', $topic->id));
+            throw new TopicAlreadyRegistered(\sprintf('A topic for URI "%s" is already registered.', $topic->id));
         }
 
         $this->topics[$topic->id] = $topic;
@@ -40,7 +40,7 @@ final class ArrayTopicRegistry implements TopicRegistry
      */
     public function get(string $id): Topic
     {
-        return $this->topics[$id] ?? throw new TopicNotFound(sprintf('A topic for URI "%s" is not registered.', $id));
+        return $this->topics[$id] ?? throw new TopicNotFound(\sprintf('A topic for URI "%s" is not registered.', $id));
     }
 
     public function has(string $id): bool

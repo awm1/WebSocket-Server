@@ -33,7 +33,7 @@ final readonly class Topic implements \IteratorAggregate, \Countable, \Stringabl
     public function add(Connection $connection): void
     {
         if (!$connection instanceof WAMPConnection) {
-            throw new UnsupportedConnection(sprintf('Connections registered in "%s" must be an instance of "%s", "%s" given.', self::class, WAMPConnection::class, get_debug_type($connection)));
+            throw new UnsupportedConnection(\sprintf('Connections registered in "%s" must be an instance of "%s", "%s" given.', self::class, WAMPConnection::class, get_debug_type($connection)));
         }
 
         $this->subscribers->attach($connection);

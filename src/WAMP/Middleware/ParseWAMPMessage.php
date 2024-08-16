@@ -144,7 +144,7 @@ final class ParseWAMPMessage implements WebSocketServerMiddleware
                 break;
 
             default:
-                throw new UnsupportedMessageType($message[0], sprintf('Unsupported WAMP message type "%s".', $message[0]));
+                throw new UnsupportedMessageType($message[0], \sprintf('Unsupported WAMP message type "%s".', $message[0]));
         }
     }
 

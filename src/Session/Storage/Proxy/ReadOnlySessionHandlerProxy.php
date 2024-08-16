@@ -33,7 +33,7 @@ final class ReadOnlySessionHandlerProxy extends AbstractProxy implements \Sessio
     public function setId(string $id): void
     {
         if (null !== $this->sessionId) {
-            throw new ReadOnlySession(sprintf('The session ID cannot be changed once set in "%s".', self::class));
+            throw new ReadOnlySession(\sprintf('The session ID cannot be changed once set in "%s".', self::class));
         }
 
         $this->sessionId = $id;
@@ -49,7 +49,7 @@ final class ReadOnlySessionHandlerProxy extends AbstractProxy implements \Sessio
      */
     public function setName(string $name): never
     {
-        throw new ReadOnlySession(sprintf('The session name cannot be changed in "%s".', self::class));
+        throw new ReadOnlySession(\sprintf('The session name cannot be changed in "%s".', self::class));
     }
 
     public function open(string $path, string $name): bool

@@ -25,7 +25,7 @@ final class DefaultMessageHandlerResolver implements MessageHandlerResolver
     public function findMessageHandler(WAMPMessageRequest $request): MessageHandler|MessageMiddleware
     {
         if (!$handler = $request->attributes->get('_controller')) {
-            throw new InvalidRequest(sprintf('Cannot resolve a message handler in "%s" when the "_controller" parameter is not set in the request attributes.', self::class));
+            throw new InvalidRequest(\sprintf('Cannot resolve a message handler in "%s" when the "_controller" parameter is not set in the request attributes.', self::class));
         }
 
         if ($handler instanceof MessageHandler || $handler instanceof MessageMiddleware) {
@@ -33,21 +33,21 @@ final class DefaultMessageHandlerResolver implements MessageHandlerResolver
         }
 
         if (!\is_string($handler)) {
-            throw new InvalidRequest(sprintf('The "%s" class only supports strings or an instance of "%s" or "%s" as the "_controller" parameter in the request attributes, "%s" given.', self::class, MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
+            throw new InvalidRequest(\sprintf('The "%s" class only supports strings or an instance of "%s" or "%s" as the "_controller" parameter in the request attributes, "%s" given.', self::class, MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
         }
 
         if (!class_exists($handler)) {
-            throw new UnknownMessageHandler(sprintf('Message handler "%s" does not exist.', $handler));
+            throw new UnknownMessageHandler(\sprintf('Message handler "%s" does not exist.', $handler));
         }
 
         try {
             $handler = new $handler();
         } catch (\ArgumentCountError $exception) {
-            throw new CannotInstantiateMessageHandler($handler, sprintf('Cannot instantiate message handler "%s" in "%s", only handlers with no constructors can be instantiated by this resolver.', $handler, self::class), 0, $exception);
+            throw new CannotInstantiateMessageHandler($handler, \sprintf('Cannot instantiate message handler "%s" in "%s", only handlers with no constructors can be instantiated by this resolver.', $handler, self::class), 0, $exception);
         }
 
         if (!$handler instanceof MessageHandler && !$handler instanceof MessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('A message handler resolver can only return instances of "%s" or "%s", ensure "%s" implements the right interface.', MessageHandler::class, MessageMiddleware::class, $handler::class));
+            throw new InvalidMessageHandler(\sprintf('A message handler resolver can only return instances of "%s" or "%s", ensure "%s" implements the right interface.', MessageHandler::class, MessageMiddleware::class, $handler::class));
         }
 
         return $handler;

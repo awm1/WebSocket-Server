@@ -26,7 +26,7 @@ final readonly class PsrContainerMessageHandlerResolver implements MessageHandle
     public function findMessageHandler(WAMPMessageRequest $request): MessageHandler|MessageMiddleware
     {
         if (!$handler = $request->attributes->get('_controller')) {
-            throw new InvalidRequest(sprintf('Cannot resolve a message handler in "%s" when the "_controller" parameter is not set in the request attributes.', self::class));
+            throw new InvalidRequest(\sprintf('Cannot resolve a message handler in "%s" when the "_controller" parameter is not set in the request attributes.', self::class));
         }
 
         if ($handler instanceof MessageHandler || $handler instanceof MessageMiddleware) {
@@ -34,17 +34,17 @@ final readonly class PsrContainerMessageHandlerResolver implements MessageHandle
         }
 
         if (!\is_string($handler)) {
-            throw new InvalidRequest(sprintf('The "%s" class only supports strings or an instance of "%s" or "%s" as the "_controller" parameter in the request attributes, "%s" given.', self::class, MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
+            throw new InvalidRequest(\sprintf('The "%s" class only supports strings or an instance of "%s" or "%s" as the "_controller" parameter in the request attributes, "%s" given.', self::class, MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
         }
 
         if (!$this->container->has($handler)) {
-            throw new UnknownMessageHandler(sprintf('A message handler for service ID "%s" does not exist in the container.', $handler));
+            throw new UnknownMessageHandler(\sprintf('A message handler for service ID "%s" does not exist in the container.', $handler));
         }
 
         $handler = $this->container->get($handler);
 
         if (!$handler instanceof MessageHandler && !$handler instanceof MessageMiddleware) {
-            throw new InvalidMessageHandler(sprintf('A message handler resolver can only return instances of "%s" or "%s", "%s" returned.', MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
+            throw new InvalidMessageHandler(\sprintf('A message handler resolver can only return instances of "%s" or "%s", "%s" returned.', MessageHandler::class, MessageMiddleware::class, get_debug_type($handler)));
         }
 
         return $handler;

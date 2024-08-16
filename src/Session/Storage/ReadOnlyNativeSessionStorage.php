@@ -112,7 +112,7 @@ final class ReadOnlyNativeSessionStorage implements SessionStorageInterface
      */
     public function setName(string $name): never
     {
-        throw new ReadOnlySession(sprintf('The session name cannot be changed in "%s".', self::class));
+        throw new ReadOnlySession(\sprintf('The session name cannot be changed in "%s".', self::class));
     }
 
     /**
@@ -120,7 +120,7 @@ final class ReadOnlyNativeSessionStorage implements SessionStorageInterface
      */
     public function regenerate(bool $destroy = false, ?int $lifetime = null): never
     {
-        throw new ReadOnlySession(sprintf('The session cannot be regenerated in "%s".', self::class));
+        throw new ReadOnlySession(\sprintf('The session cannot be regenerated in "%s".', self::class));
     }
 
     public function save(): void
@@ -154,7 +154,7 @@ final class ReadOnlyNativeSessionStorage implements SessionStorageInterface
     public function getBag(string $name): SessionBagInterface
     {
         if (!isset($this->bags[$name])) {
-            throw new \InvalidArgumentException(sprintf('The SessionBagInterface "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('The SessionBagInterface "%s" is not registered.', $name));
         }
 
         if (!$this->started) {
@@ -232,7 +232,7 @@ final class ReadOnlyNativeSessionStorage implements SessionStorageInterface
             'php' => new PhpReader(),
             'php_binary' => new PhpBinaryReader(),
             'php_serialize' => new PhpSerializeReader(),
-            default => throw new SessionMisconfigured(sprintf('The "%s" serialize handler is not supported in "%s", set the PHP "session.serialize_handler" option to a supported handler or inject your own "%s" instance.', $this->optionsHandler->get('session.serialize_handler'), self::class, Reader::class)),
+            default => throw new SessionMisconfigured(\sprintf('The "%s" serialize handler is not supported in "%s", set the PHP "session.serialize_handler" option to a supported handler or inject your own "%s" instance.', $this->optionsHandler->get('session.serialize_handler'), self::class, Reader::class)),
         };
     }
 
