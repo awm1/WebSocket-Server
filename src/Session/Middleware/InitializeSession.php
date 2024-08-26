@@ -32,7 +32,7 @@ final readonly class InitializeSession implements ServerMiddleware
      * Handles a new connection to the server.
      *
      * @throws InvalidRequestHeader if the Cookie header contains an invalid value
-     * @throws MissingRequest if the HTTP request has not been parsed before this middleware is executed
+     * @throws MissingRequest       if the HTTP request has not been parsed before this middleware is executed
      */
     public function onOpen(Connection $connection): void
     {
