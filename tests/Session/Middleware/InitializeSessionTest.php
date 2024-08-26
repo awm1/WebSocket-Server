@@ -4,6 +4,7 @@ namespace BabDev\WebSocket\Server\Tests\Session\Middleware;
 
 use BabDev\WebSocket\Server\Connection;
 use BabDev\WebSocket\Server\Connection\AttributeStore;
+use BabDev\WebSocket\Server\Http\Exception\InvalidRequestHeader;
 use BabDev\WebSocket\Server\Http\Exception\MissingRequest;
 use BabDev\WebSocket\Server\OptionsHandler;
 use BabDev\WebSocket\Server\ServerMiddleware;
@@ -136,7 +137,7 @@ final class InitializeSessionTest extends TestCase
     #[TestDox('Handles a new connection being opened with an invalid cookie header')]
     public function testOnOpenWithInvalidCookieHeader(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidRequestHeader::class);
 
         /** @var MockObject&RequestInterface $request */
         $request = $this->createMock(RequestInterface::class);

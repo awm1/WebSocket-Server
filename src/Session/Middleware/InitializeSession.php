@@ -3,6 +3,7 @@
 namespace BabDev\WebSocket\Server\Session\Middleware;
 
 use BabDev\WebSocket\Server\Connection;
+use BabDev\WebSocket\Server\Http\Exception\InvalidRequestHeader;
 use BabDev\WebSocket\Server\Http\Exception\MissingRequest;
 use BabDev\WebSocket\Server\Http\Middleware\ParseHttpRequest;
 use BabDev\WebSocket\Server\IniOptionsHandler;
@@ -30,6 +31,7 @@ final readonly class InitializeSession implements ServerMiddleware
     /**
      * Handles a new connection to the server.
      *
+     * @throws InvalidRequestHeader if the Cookie header contains an invalid value
      * @throws MissingRequest if the HTTP request has not been parsed before this middleware is executed
      */
     public function onOpen(Connection $connection): void
@@ -94,6 +96,8 @@ final readonly class InitializeSession implements ServerMiddleware
      * Parses a `Cookie:` header value.
      *
      * Based on the cookie handling from `SAPI_TREAT_DATA_FUNC` in `main/php_variables.c` from the PHP source.
+     *
+     * @throws InvalidRequestHeader if the Cookie header contains an invalid value
      */
     private function parseCookieHeader(string $cookieHeader): array
     {
@@ -103,7 +107,7 @@ final readonly class InitializeSession implements ServerMiddleware
 
         while ($cookie) {
             if (!str_contains($cookie, '=')) {
-                throw new \RuntimeException('Invalid Cookie header.');
+                throw new InvalidRequestHeader('Cookie', $cookieHeader, 'Invalid Cookie header.');
             }
 
             /** @var int $separatorPosition */
