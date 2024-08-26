@@ -128,6 +128,8 @@ final class ParseHttpRequestTest extends TestCase
         $this->decoratedMiddleware->expects($this->never())
             ->method('onOpen');
 
+        $this->expectException(MalformedRequest::class);
+
         $this->middleware->onMessage($connection, $message);
     }
 
@@ -158,6 +160,8 @@ final class ParseHttpRequestTest extends TestCase
 
         $this->decoratedMiddleware->expects($this->never())
             ->method('onOpen');
+
+        $this->expectException(MessageTooLarge::class);
 
         $this->middleware->onMessage($connection, $message);
     }

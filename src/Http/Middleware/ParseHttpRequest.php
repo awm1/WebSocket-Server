@@ -46,14 +46,14 @@ final readonly class ParseHttpRequest implements ServerMiddleware
             if (!($request = $this->requestParser->parse($connection, $data)) instanceof RequestInterface) {
                 return;
             }
-        } catch (MalformedRequest) {
+        } catch (MalformedRequest $exception) {
             $this->close($connection, 400);
 
-            return;
-        } catch (MessageTooLarge) {
+            throw $exception;
+        } catch (MessageTooLarge $exception) {
             $this->close($connection, 413);
 
-            return;
+            throw $exception;
         }
 
         $connection->getAttributeStore()->set('http.headers_received', true);
