@@ -51,6 +51,8 @@ final class RestrictToAllowedOrigins implements ServerMiddleware
                 $parsedOriginHeader = parse_url($originHeader, \PHP_URL_HOST);
 
                 if (false === $parsedOriginHeader || null === $parsedOriginHeader) {
+                    $this->close($connection, 400);
+
                     throw new MalformedRequest('The "Origin" header cannot be parsed.');
                 }
 
