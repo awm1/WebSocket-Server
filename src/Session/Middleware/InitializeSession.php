@@ -76,7 +76,7 @@ final readonly class InitializeSession implements ServerMiddleware
         if ($this->optionsHandler->get('session.auto_start')) {
             try {
                 $session->start();
-            } catch (InvalidSession | SessionMisconfigured $exception) {
+            } catch (InvalidSession|SessionMisconfigured $exception) {
                 // Something went wrong trying to use the session data, bail out
                 $this->close($connection, 500);
 
