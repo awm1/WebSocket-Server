@@ -164,7 +164,11 @@ final class ParseWAMPMessage implements WebSocketServerMiddleware
      */
     public function onError(Connection $connection, \Throwable $throwable): void
     {
-        $this->middleware->onError($this->connections[$connection], $throwable);
+        if ($this->connections->contains($connection)) {
+            $this->middleware->onError($this->connections[$connection], $throwable);
+        } else {
+            $this->middleware->onError($connection, $throwable);
+        }
     }
 
     public function getServerIdentity(): string

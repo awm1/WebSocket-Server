@@ -208,6 +208,21 @@ final class EstablishWebSocketConnectionTest extends TestCase
         $this->middleware->onOpen($connection);
     }
 
+    #[TestDox('Forwards the non-decorated connection to middleware onError if a decorator is not available')]
+    public function testCanForwardNotDecoratedConnectionToMiddlewareOnError(): void
+    {
+        /** @var MockObject&Connection $connection */
+        $connection = $this->createMock(Connection::class);
+
+        $exception = new \RuntimeException('Testing');
+
+        $this->decoratedMiddleware->expects($this->once())
+            ->method('onError')
+            ->with($connection, $exception);
+
+        $this->middleware->onError($connection, $exception);
+    }
+
     public function testTogglesStrictSubProtocolChecks(): void
     {
         $this->negotiator->expects($this->once())

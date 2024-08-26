@@ -561,7 +561,7 @@ final class ParseWAMPMessageTest extends TestCase
         $this->middleware->onClose($connection);
     }
 
-    #[TestDox('Handles an error')]
+    #[TestDox('Forwards the decorated connection to middleware onError when a decorator is available')]
     public function testOnError(): void
     {
         $attributeStore = new ArrayAttributeStore();
@@ -583,6 +583,21 @@ final class ParseWAMPMessageTest extends TestCase
 
         $this->middleware->onOpen($connection);
         $this->middleware->onError($connection, $error);
+    }
+
+    #[TestDox('Forwards the non-decorated connection to middleware onError if a decorator is not available')]
+    public function testOnErrorWithUndecoratedConnection(): void
+    {
+        /** @var MockObject&Connection $connection */
+        $connection = $this->createMock(Connection::class);
+
+        $exception = new \Exception('Testing');
+
+        $this->decoratedMiddleware->expects($this->once())
+            ->method('onError')
+            ->with($connection, $exception);
+
+        $this->middleware->onError($connection, $exception);
     }
 
     #[TestDox('The server identity can be managed')]

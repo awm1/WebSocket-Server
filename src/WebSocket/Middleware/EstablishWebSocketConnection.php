@@ -153,7 +153,7 @@ final class EstablishWebSocketConnection implements ServerMiddleware
         if ($this->connections->contains($connection)) {
             $this->middleware->onError($this->connections[$connection]->connection, $throwable);
         } else {
-            $connection->close();
+            $this->middleware->onError($connection, $throwable);
         }
     }
 
