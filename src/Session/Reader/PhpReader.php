@@ -83,14 +83,19 @@ final class PhpReader implements Reader
                 // Add characters for the closing quote and semicolon
                 return \strlen($matches[0]) + (int) substr($matches[0], 2, -2) + 2;
 
-                // Array value
+                // Array or object value
             case 'a':
-                if (!preg_match('/^a:\d+:\{/', $data, $matches)) {
+            case 'O':
+                $isArray = 'a' === $data[0];
+
+                $pattern = $isArray ? '/^a:\d+:\{/' : '/^O:\d+:"[^"]+":(\d+):\{/';
+
+                if (!preg_match($pattern, $data, $matches)) {
                     return false;
                 }
 
                 $start = \strlen($matches[0]);
-                $count = (int) substr($matches[0], 2, -2);
+                $count = $isArray ? (int) substr($matches[0], 2, -2) : (int) $matches[1];
                 $offset = $start;
                 $length = \strlen($data);
 
